@@ -20,10 +20,7 @@ def fix_marks(child_full_name):
     child = get_child(child_full_name)
     if not child:
         return
-    child_marks = Mark.objects.filter(schoolkid=child.id, points__lte=3)
-    for child_mark in child_marks:
-        child_mark.points = 5
-        child_mark.save()
+    Mark.objects.filter(schoolkid=child.id, points__lte=3).update(points = 5)
 
 
 def remove_chastisements(child_full_name):
@@ -74,7 +71,3 @@ def create_commendation(child_full_name, lesson):
         schoolkid=child,
         subject=subject,
         teacher=lesson.teacher)
-
-
-def a123():
-    print('Yess')
