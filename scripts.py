@@ -13,7 +13,7 @@ def get_child(child_full_name):
         print(f'Учеников с именем {child_full_name} несколько, уточни имя')
         return None
 
-    return childs[0]
+    return childs.first()
 
 
 def fix_marks(child_full_name):
@@ -45,7 +45,7 @@ def create_commendation(child_full_name, lesson):
     if not subjects:
         print(f'Такого предмета нет: {lesson}')
         return
-    subject = subjects[0]
+    subject = subjects.first()
 
     all_commendations = [
         'Молодец!', 'Отлично!', 'Хорошо!',
@@ -67,10 +67,14 @@ def create_commendation(child_full_name, lesson):
     lesson = Lesson.objects.filter(
         year_of_study=child.year_of_study,
         group_letter=child.group_letter,
-        subject=subject.id)[0]
+        subject=subject.id).first()
     Commendation.objects.create(
         text=choice(all_commendations),
         created=lesson.date,
         schoolkid=child,
         subject=subject,
         teacher=lesson.teacher)
+
+
+def a123():
+    print('Yess')
