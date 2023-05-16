@@ -2,6 +2,23 @@ from datacenter.models import Schoolkid, Mark, Subject
 from datacenter.models import Lesson, Commendation, Chastisement
 from random import choice
 
+ALL_COMMENDATIONS = [
+    'Молодец!', 'Отлично!', 'Хорошо!',
+    'Гораздо лучше, чем я ожидал!',
+    'Ты меня приятно удивил!', 'Великолепно!', 'Прекрасно!',
+    'Ты меня очень обрадовал!', 'Именно этого я давно ждал от тебя!',
+    'Сказано здорово – просто и ясно!', 'Ты, как всегда, точен!',
+    'Очень хороший ответ!', 'Талантливо!', 'Я поражен!',
+    'Ты сегодня прыгнул выше головы!', 'Уже существенно лучше!',
+    'Потрясающе!', 'Замечательно!', 'Прекрасное начало!',
+    'Так держать!', 'Ты на верном пути!', 'Здорово!',
+    'Это как раз то, что нужно!', 'Я тобой горжусь!',
+    'С каждым разом у тебя получается всё лучше!',
+    'Мы с тобой не зря поработали!', 'Я вижу, как ты стараешься!',
+    'Ты растешь над собой!', 'Ты многое сделал, я это вижу!',
+    'Теперь у тебя точно все получится!'
+]
+
 
 def get_child(child_full_name):
     childs = Schoolkid.objects.filter(
@@ -20,7 +37,7 @@ def fix_marks(child_full_name):
     child = get_child(child_full_name)
     if not child:
         return
-    Mark.objects.filter(schoolkid=child.id, points__lte=3).update(points = 5)
+    Mark.objects.filter(schoolkid=child.id, points__lte=3).update(points=5)
 
 
 def remove_chastisements(child_full_name):
@@ -44,29 +61,12 @@ def create_commendation(child_full_name, lesson):
         return
     subject = subjects.first()
 
-    all_commendations = [
-        'Молодец!', 'Отлично!', 'Хорошо!',
-        'Гораздо лучше, чем я ожидал!',
-        'Ты меня приятно удивил!', 'Великолепно!', 'Прекрасно!',
-        'Ты меня очень обрадовал!', 'Именно этого я давно ждал от тебя!',
-        'Сказано здорово – просто и ясно!', 'Ты, как всегда, точен!',
-        'Очень хороший ответ!', 'Талантливо!', 'Я поражен!',
-        'Ты сегодня прыгнул выше головы!', 'Уже существенно лучше!',
-        'Потрясающе!', 'Замечательно!', 'Прекрасное начало!',
-        'Так держать!', 'Ты на верном пути!', 'Здорово!',
-        'Это как раз то, что нужно!', 'Я тобой горжусь!',
-        'С каждым разом у тебя получается всё лучше!',
-        'Мы с тобой не зря поработали!', 'Я вижу, как ты стараешься!',
-        'Ты растешь над собой!', 'Ты многое сделал, я это вижу!',
-        'Теперь у тебя точно все получится!'
-    ]
-
     lesson = Lesson.objects.filter(
         year_of_study=child.year_of_study,
         group_letter=child.group_letter,
         subject=subject.id).first()
     Commendation.objects.create(
-        text=choice(all_commendations),
+        text=choice(ALL_COMMENDATIONS),
         created=lesson.date,
         schoolkid=child,
         subject=subject,
